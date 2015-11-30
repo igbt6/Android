@@ -10,12 +10,12 @@
             android:angle="45"
             android:startColor="@color/green"
             android:centerColor="@color/text_light"
-            android:endColor="@color/theme_blue_accent" />
+            android:endColor="@color/blue_accent" />
 
         <!-- Specify a dark green border -->
         <stroke
             android:width="5dp"
-            android:color="@color/theme_blue_background" />
+            android:color="@color/blue_background" />
 
         <!-- Specify the margins that all content inside the drawable must adhere to -->
         <padding

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
@@ -16,8 +17,12 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    private DevicesAdapterBase mDevicesAdapterBase;
     private DevicesAdapter mDevicesAdapter;
 
+    //dummy data
+    private DeviceModel mWeatherSensor;
+    private DeviceModel mPositionSensor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,37 +39,58 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mDevicesAdapter= new DevicesAdapter(this);
-        GridView mGridview = (GridView) findViewById(R.id.all_devices_gridview);
-        mGridview.setAdapter(mDevicesAdapter);
-        mGridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(view.getContext(), "ChosenDevice: " + String.valueOf(((DeviceModel) mDevicesAdapter.getItem(position)).getName()), Toast.LENGTH_SHORT).show();
-            }
-        });
+
+        mDevicesAdapter =new DevicesAdapter(this);
+
 
         //Setup devices
         ArrayList<DeviceModel.DeviceParameterModel> weatherSensorParameters = new ArrayList<>();
         weatherSensorParameters.add(new DeviceModel.DeviceParameterModel("Temperature", 21.0));
         weatherSensorParameters.add(new DeviceModel.DeviceParameterModel("Pressure", 995.0));
         weatherSensorParameters.add(new DeviceModel.DeviceParameterModel("Humidity", 91.0));
-        DeviceModel mWeatherSensor = new DeviceModel(0,"Weather Sensor", weatherSensorParameters);
+        mWeatherSensor = new DeviceModel(0,"Weather Sensor", weatherSensorParameters);
 
         ArrayList<DeviceModel.DeviceParameterModel> positionSensorParameters = new ArrayList<>();
         positionSensorParameters.add(new DeviceModel.DeviceParameterModel("Acceleration X", 111.0));
         positionSensorParameters.add(new DeviceModel.DeviceParameterModel("Acceleration Y", 145.0));
         positionSensorParameters.add(new DeviceModel.DeviceParameterModel("Acceleration Z", 65.0));
-        DeviceModel mPositionSensor = new DeviceModel(0,"Position Sensor", weatherSensorParameters);
+        mPositionSensor = new DeviceModel(0,"Position Sensor", weatherSensorParameters);
 
-
-
-        mDevicesAdapter.addDevice(mWeatherSensor);
-        mDevicesAdapter.addDevice(mPositionSensor);
-
+        //setUpGridView();
+        setUpGridViewWithRecyclerView();
     }
 
+   private void setUpGridViewWithRecyclerView(){
+        RecyclerView devicesRecyclerView = (RecyclerView)findViewById(R.id.devices_recycler_view);
+        final int space = getApplicationContext().getResources().getDimensionPixelSize(R.dimen.spacing_nano);
+        devicesRecyclerView.addItemDecoration(new OffsetDecoration(space));
+        mDevicesAdapter= new DevicesAdapter(this);
+        devicesRecyclerView.setAdapter(mDevicesAdapter);
+        mDevicesAdapter.setOnItemClickListener(new DevicesAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Toast.makeText(view.getContext(), "ChosenDevice: " + String.valueOf(((DeviceModel) mDevicesAdapter.getItem(position)).getName()), Toast.LENGTH_SHORT).show();
+            }
+        });
 
+       mDevicesAdapter.addDevice(mWeatherSensor);
+       mDevicesAdapter.addDevice(mPositionSensor);
+   }
+
+
+    private void setUpGridView(){
+        mDevicesAdapterBase= new DevicesAdapterBase(this);
+        GridView mGridview = (GridView) findViewById(R.id.all_devices_gridview);
+        mGridview.setAdapter(mDevicesAdapterBase);
+        mGridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(view.getContext(), "ChosenDevice: " + String.valueOf(((DeviceModel) mDevicesAdapterBase.getItem(position)).getName()), Toast.LENGTH_SHORT).show();
+            }
+        });
+        mDevicesAdapterBase.addDevice(mWeatherSensor);
+        mDevicesAdapterBase.addDevice(mPositionSensor);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

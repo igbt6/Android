@@ -1,6 +1,8 @@
 package com.app.uszko.viewpagertests;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by igbt6 on 29.11.2015.
  */
-public class DevicesAdapter extends BaseAdapter {
+public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.DeviceViewHolder> {
     private final static String TAG  =  DevicesAdapter.class.getSimpleName();
     private final static boolean LOG_ENABLE = true;
     private OnItemClickListener mOnItemClickListener;
@@ -22,14 +25,14 @@ public class DevicesAdapter extends BaseAdapter {
         void onClick(View view, int position);
     }
     private Context mContext;
-    private LayoutInflater mInflater;
+    private LayoutInflater mLayoutInflater;
     private ArrayList<DeviceModel> mDevices;
 
 
     public DevicesAdapter(Context ctx){
         mContext= ctx;
         mDevices= new ArrayList<>();
-        mInflater=LayoutInflater.from(mContext);
+        mLayoutInflater=LayoutInflater.from(mContext);
 
     }
 
@@ -37,47 +40,58 @@ public class DevicesAdapter extends BaseAdapter {
     public void addDevice(DeviceModel dev){
         if(!mDevices.contains(dev)) {
             mDevices.add(dev);
-            //notifyDataSetChanged();
+            notifyDataSetChanged();
         }
     }
 
+    public void  setOnItemClickListener(OnItemClickListener onItemClickListener){
+        mOnItemClickListener= onItemClickListener;
+    }
+
     @Override
-    public int getCount() {
+    public DeviceViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new DeviceViewHolder(mLayoutInflater.inflate(R.layout.devices_item, parent, false));
+    }
+
+    @Override
+    public void onBindViewHolder(DeviceViewHolder holder, final int position) {
+        holder.itemView.setBackgroundColor(ContextCompat.getColor(mContext,R.color.blue_primary_dark));
+        holder.deviceName.setText(mDevices.get(position).getName());
+        holder.deviceName.setBackgroundColor(ContextCompat.getColor(mContext,R.color.purple_accent));
+        holder.deviceIcon.setImageResource(R.drawable.app_logo);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnItemClickListener.onClick(v,position);
+            }
+        });
+    }
+
+    @Override
+    public void onBindViewHolder(DeviceViewHolder holder, int position, List<Object> payloads) {
+        super.onBindViewHolder(holder, position, payloads);
+    }
+
+    @Override
+    public int getItemCount() {
         return mDevices.size();
     }
 
-    @Override
-    public Object getItem(int position) {
+    public DeviceModel getItem(int position){
         return mDevices.get(position);
     }
 
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        DeviceViewHolder viewHolder;
-        if(convertView==null){
-            convertView= mInflater.inflate(R.layout.devices_item,null);
-            viewHolder= new DeviceViewHolder();
-            viewHolder.deviceIcon=(ImageView)convertView.findViewById(R.id.device_icon);
-            viewHolder.deviceName=(TextView)convertView.findViewById(R.id.device_name);
-            convertView.setTag(viewHolder);
+    static class DeviceViewHolder extends RecyclerView.ViewHolder{
+
+        final ImageView deviceIcon;
+        final TextView deviceName;
+
+        public DeviceViewHolder(View container) {
+            super(container);
+            deviceIcon= (ImageView)container.findViewById(R.id.device_icon);
+            deviceName= (TextView)container.findViewById(R.id.device_name);
         }
-        else{
-            viewHolder = (DeviceViewHolder) convertView.getTag();
-        }
-        viewHolder.deviceName.setText(mDevices.get(position).getName());
-        viewHolder.deviceIcon.setImageResource(R.drawable.app_logo);
-        return convertView;
+
     }
-
-
-    static class DeviceViewHolder {
-        ImageView deviceIcon;
-        TextView deviceName;
-    }
-
 }
