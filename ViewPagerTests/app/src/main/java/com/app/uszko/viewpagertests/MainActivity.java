@@ -1,5 +1,6 @@
 package com.app.uszko.viewpagertests;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -70,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
                 Toast.makeText(view.getContext(), "ChosenDevice: " + String.valueOf(((DeviceModel) mDevicesAdapter.getItem(position)).getName()), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, DeviceParametersActivity.class);
+                startActivity(intent);
             }
         });
 
