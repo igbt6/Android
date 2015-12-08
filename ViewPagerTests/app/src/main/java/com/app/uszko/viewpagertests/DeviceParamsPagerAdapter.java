@@ -15,28 +15,31 @@ import java.util.List;
  */
 public class DeviceParamsPagerAdapter  extends FragmentStatePagerAdapter{
 
-        private static final String[] Titles= new String[]{"Test1,Test2"};
-        private SparseArray<Fragment> registeredFragments = new SparseArray<>();
+        private SparseArray<DeviceParametersFragment> registeredFragments = new SparseArray<>();
 
-        private final List<DeviceParametersFragment> mDevicesParameterFragmentList= new ArrayList<>();
+        private final List<DeviceParametersFragment> mDevicesParameterFragmentList;
+
         DeviceParamsPagerAdapter (FragmentManager fragmentManager){
             super(fragmentManager);
+            mDevicesParameterFragmentList= new ArrayList<>();
         }
 
 
         public void updateDevParamsList(DeviceParametersFragment devFragm){
-            mDevicesParameterFragmentList.add(devFragm);
+            if(!mDevicesParameterFragmentList.contains(devFragm)) {
+                mDevicesParameterFragmentList.add(devFragm);
+            }
         }
 
         @Override
-        public Fragment getItem(int position) {
+        public DeviceParametersFragment getItem(int position) {
             return mDevicesParameterFragmentList.get(position);
         }
 
         // Register the fragment when the item is instantiated
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            Fragment fragment = (Fragment) super.instantiateItem(container, position);
+            DeviceParametersFragment fragment = (DeviceParametersFragment) super.instantiateItem(container, position);
             registeredFragments.put(position, fragment);
             return fragment;
         }
@@ -49,21 +52,21 @@ public class DeviceParamsPagerAdapter  extends FragmentStatePagerAdapter{
         }
 
         // Returns the fragment for the position (if instantiated)
-        public Fragment getRegisteredFragment(int position) {
+        public DeviceParametersFragment getRegisteredFragment(int position) {
             return registeredFragments.get(position);
         }
 
-        public Fragment getCurrentFragment(int pos){
+        public DeviceParametersFragment getCurrentFragment(int pos){
             return mDevicesParameterFragmentList.get(pos);
         }
         @Override
         public int getCount() {
-            return Titles.length;
+            return mDevicesParameterFragmentList.size();
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return Titles[position] ;
+            return mDevicesParameterFragmentList.get(position).getDevName() ;
         }
 }
 

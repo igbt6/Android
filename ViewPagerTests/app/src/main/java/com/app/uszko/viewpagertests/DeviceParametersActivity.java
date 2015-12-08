@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import static com.app.uszko.viewpagertests.LoggerUtil.LOGE;
+
 /**
  * Created by igbt6 on 03.12.2015.
  */
@@ -30,45 +32,44 @@ public class DeviceParametersActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setContentView(R.layout.activity_device_params);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "View Pager Test App made by Lukasz Uszko (lukasz.uszko@gmail.com)", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "View Pager Test App made by Lukasz Uszko (lukasz.uszko@gmail.com ", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
-
-
-
-        mViewPager = (ViewPager) findViewById(R.id.dev_params_viewpager);
-
-            mPageAdapter=   new DeviceParamsPagerAdapter(getSupportFragmentManager());
-            try {
-
-                 mPageAdapter.updateDevParamsList(DeviceParametersFragment.newInstance("NAME"));
-            }
-            catch (Exception e){
-                Toast.makeText(this, "You not connected or XML is not correct - must download a newer version from the INTERNET!", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-            mViewPager.setAdapter(mPageAdapter);
-
-        mTabLayout = (TabLayout) findViewById(R.id.dev_params_tab_layout);
-        mTabLayout.setupWithViewPager(mViewPager);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
+        setSupportActionBar(mToolbar);
+        mViewPager = (ViewPager) findViewById(R.id.dev_params_viewpager);
+
+        mPageAdapter=   new DeviceParamsPagerAdapter(getSupportFragmentManager());
+        try {
+            for(DeviceModel dev: ApplicationDataEngine.getInstance().getDevices()) {
+                mPageAdapter.updateDevParamsList(DeviceParametersFragment.newInstance(dev.getName()));
+            }
+
+        }
+        catch (Exception e){
+            LOGE(LOGGER_ENABLE,TAG,"Error! ",e);
+            finish();
+        }
+        mViewPager.setAdapter(mPageAdapter);
         mViewPager.setCurrentItem(mViewPager.getCurrentItem());
+        mTabLayout = (TabLayout) findViewById(R.id.dev_params_tab_layout);
+        mTabLayout.setupWithViewPager(mViewPager);
+
+        //mPageAdapter.getRegisteredFragment(mViewPager.getCurrentItem()).getDevParamAdapter().updateParams(devParam);
         mPageAdapter.notifyDataSetChanged();
     }
-
-
 }

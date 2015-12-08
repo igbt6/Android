@@ -2,6 +2,7 @@ package com.app.uszko.viewpagertests;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +42,9 @@ public class DeviceParameterAdapter extends RecyclerView.Adapter<DeviceParameter
         }
     }
 
+    public void  setOnItemClickListener(OnItemClickListener onItemClickListener){
+        mOnItemClickListener= onItemClickListener;
+    }
 
     @Override
     public DeviceParameterAdapter.DeviceParameterFragmentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -50,7 +54,7 @@ public class DeviceParameterAdapter extends RecyclerView.Adapter<DeviceParameter
 
     @Override
     public void onBindViewHolder(DeviceParameterAdapter.DeviceParameterFragmentViewHolder holder, final int position) {
-        holder.itemView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.blue_primary_dark));
+        ((CardView)holder.itemView).setCardBackgroundColor(ContextCompat.getColor(mContext, R.color.blue_primary_dark));
         holder.paramIcon.setImageResource(R.drawable.app_logo);
         holder.paramName.setBackgroundColor(ContextCompat.getColor(mContext, R.color.purple_accent));
         holder.paramName.setText(mDevParams.get(position).getName());
@@ -69,7 +73,9 @@ public class DeviceParameterAdapter extends RecyclerView.Adapter<DeviceParameter
     }
 
 
-
+    public ArrayList<DeviceModel.DeviceParameterModel> getDevParams() {
+        return mDevParams;
+    }
 
     static class DeviceParameterFragmentViewHolder extends RecyclerView.ViewHolder{
 

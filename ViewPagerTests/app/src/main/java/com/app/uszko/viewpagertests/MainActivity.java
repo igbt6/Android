@@ -21,9 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private DevicesAdapterBase mDevicesAdapterBase;
     private DevicesAdapter mDevicesAdapter;
 
-    //dummy data
-    private DeviceModel mWeatherSensor;
-    private DeviceModel mPositionSensor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,17 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Setup devices
-        ArrayList<DeviceModel.DeviceParameterModel> weatherSensorParameters = new ArrayList<>();
-        weatherSensorParameters.add(new DeviceModel.DeviceParameterModel("Temperature", 21.0));
-        weatherSensorParameters.add(new DeviceModel.DeviceParameterModel("Pressure", 995.0));
-        weatherSensorParameters.add(new DeviceModel.DeviceParameterModel("Humidity", 91.0));
-        mWeatherSensor = new DeviceModel(0,"Weather Sensor", weatherSensorParameters);
-
-        ArrayList<DeviceModel.DeviceParameterModel> positionSensorParameters = new ArrayList<>();
-        positionSensorParameters.add(new DeviceModel.DeviceParameterModel("Acceleration X", 111.0));
-        positionSensorParameters.add(new DeviceModel.DeviceParameterModel("Acceleration Y", 145.0));
-        positionSensorParameters.add(new DeviceModel.DeviceParameterModel("Acceleration Z", 65.0));
-        mPositionSensor = new DeviceModel(0,"Position Sensor", weatherSensorParameters);
+        generateUpDevices();
 
         //setUpGridView();
         setUpGridViewWithRecyclerView();
@@ -76,8 +64,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-       mDevicesAdapter.addDevice(mWeatherSensor);
-       mDevicesAdapter.addDevice(mPositionSensor);
+       for(DeviceModel dev: ApplicationDataEngine.getInstance().getDevices()) {
+           mDevicesAdapter.addDevice(dev);
+       }
    }
 
 
@@ -91,8 +80,34 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(view.getContext(), "ChosenDevice: " + String.valueOf(((DeviceModel) mDevicesAdapterBase.getItem(position)).getName()), Toast.LENGTH_SHORT).show();
             }
         });
-        mDevicesAdapterBase.addDevice(mWeatherSensor);
-        mDevicesAdapterBase.addDevice(mPositionSensor);
+        for(DeviceModel dev: ApplicationDataEngine.getInstance().getDevices()) {
+            mDevicesAdapterBase.addDevice(dev);
+        }
+    }
+
+
+
+    private void generateUpDevices(){
+
+        //dummy data
+        DeviceModel mWeatherSensor;
+        DeviceModel mPositionSensor;
+
+        ArrayList<DeviceModel.DeviceParameterModel> weatherSensorParameters = new ArrayList<>();
+        weatherSensorParameters.add(new DeviceModel.DeviceParameterModel("Temperature", 21.0));
+        weatherSensorParameters.add(new DeviceModel.DeviceParameterModel("Pressure", 995.0));
+        weatherSensorParameters.add(new DeviceModel.DeviceParameterModel("Humidity", 91.0));
+        mWeatherSensor = new DeviceModel(0,"WeatherSensor", weatherSensorParameters);
+
+        ArrayList<DeviceModel.DeviceParameterModel> positionSensorParameters = new ArrayList<>();
+        positionSensorParameters.add(new DeviceModel.DeviceParameterModel("Acceleration X", 111.0));
+        positionSensorParameters.add(new DeviceModel.DeviceParameterModel("Acceleration Y", 145.0));
+        positionSensorParameters.add(new DeviceModel.DeviceParameterModel("Acceleration Z", 65.0));
+        mPositionSensor = new DeviceModel(0,"PositionSensor", weatherSensorParameters);
+
+        ApplicationDataEngine app = ApplicationDataEngine.getInstance();
+        app.addDevice(mWeatherSensor);
+        app.addDevice(mPositionSensor);
     }
 
     @Override
