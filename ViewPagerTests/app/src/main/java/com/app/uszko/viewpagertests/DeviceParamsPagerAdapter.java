@@ -1,8 +1,6 @@
 package com.app.uszko.viewpagertests;
 
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.SparseArray;
 import android.view.ViewGroup;
@@ -15,19 +13,22 @@ import java.util.List;
  */
 public class DeviceParamsPagerAdapter  extends FragmentStatePagerAdapter{
 
-        private SparseArray<DeviceParametersFragment> registeredFragments = new SparseArray<>();
+        private SparseArray<DeviceParametersFragment> mRegisteredFragments = new SparseArray<>();
 
         private final List<DeviceParametersFragment> mDevicesParameterFragmentList;
+        private final List<String> mDevicesNameList;
 
         DeviceParamsPagerAdapter (FragmentManager fragmentManager){
             super(fragmentManager);
             mDevicesParameterFragmentList= new ArrayList<>();
+            mDevicesNameList =new ArrayList<>();
         }
 
 
-        public void updateDevParamsList(DeviceParametersFragment devFragm){
-            if(!mDevicesParameterFragmentList.contains(devFragm)) {
+        public void updateDevParamsList(DeviceParametersFragment devFragm, String devName){
+            if(!mDevicesParameterFragmentList.contains(devFragm)&&!mDevicesNameList.contains(devName)) {
                 mDevicesParameterFragmentList.add(devFragm);
+                mDevicesNameList.add(devName);
             }
         }
 
@@ -40,24 +41,20 @@ public class DeviceParamsPagerAdapter  extends FragmentStatePagerAdapter{
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             DeviceParametersFragment fragment = (DeviceParametersFragment) super.instantiateItem(container, position);
-            registeredFragments.put(position, fragment);
+            mRegisteredFragments.put(position, fragment);
             return fragment;
         }
 
         // Unregister when the item is inactive
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            registeredFragments.remove(position);
+            mRegisteredFragments.remove(position);
             super.destroyItem(container, position, object);
         }
 
         // Returns the fragment for the position (if instantiated)
-        public DeviceParametersFragment getRegisteredFragment(int position) {
-            return registeredFragments.get(position);
-        }
-
-        public DeviceParametersFragment getCurrentFragment(int pos){
-            return mDevicesParameterFragmentList.get(pos);
+        public DeviceParametersFragment getCurrentFragment(int position){
+            return mRegisteredFragments.get(position);
         }
         @Override
         public int getCount() {
@@ -66,7 +63,7 @@ public class DeviceParamsPagerAdapter  extends FragmentStatePagerAdapter{
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return mDevicesParameterFragmentList.get(position).getDevName() ;
+            return mDevicesNameList.get(position) ;
         }
 }
 

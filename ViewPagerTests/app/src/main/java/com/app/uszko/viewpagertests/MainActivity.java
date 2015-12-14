@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view, int position) {
                 Toast.makeText(view.getContext(), "ChosenDevice: " + String.valueOf(((DeviceModel) mDevicesAdapter.getItem(position)).getName()), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this, DeviceParametersActivity.class);
+                intent.putExtra("DEV_NAME",mDevicesAdapter.getItem(position).getName());
                 startActivity(intent);
             }
         });
@@ -97,13 +98,14 @@ public class MainActivity extends AppCompatActivity {
         weatherSensorParameters.add(new DeviceModel.DeviceParameterModel("Temperature", 21.0));
         weatherSensorParameters.add(new DeviceModel.DeviceParameterModel("Pressure", 995.0));
         weatherSensorParameters.add(new DeviceModel.DeviceParameterModel("Humidity", 91.0));
+        weatherSensorParameters.add(new DeviceModel.DeviceParameterModel("Light", 333.0));
         mWeatherSensor = new DeviceModel(0,"WeatherSensor", weatherSensorParameters);
 
         ArrayList<DeviceModel.DeviceParameterModel> positionSensorParameters = new ArrayList<>();
         positionSensorParameters.add(new DeviceModel.DeviceParameterModel("Acceleration X", 111.0));
         positionSensorParameters.add(new DeviceModel.DeviceParameterModel("Acceleration Y", 145.0));
         positionSensorParameters.add(new DeviceModel.DeviceParameterModel("Acceleration Z", 65.0));
-        mPositionSensor = new DeviceModel(0,"PositionSensor", weatherSensorParameters);
+        mPositionSensor = new DeviceModel(0,"PositionSensor", positionSensorParameters);
 
         ApplicationDataEngine app = ApplicationDataEngine.getInstance();
         app.addDevice(mWeatherSensor);

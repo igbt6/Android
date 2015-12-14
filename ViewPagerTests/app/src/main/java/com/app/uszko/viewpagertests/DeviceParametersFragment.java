@@ -38,8 +38,6 @@ public class DeviceParametersFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mDevParamName = getArguments().getString(ARG_DEV_PARAM_NAME,"---");
-        System.out.println("+++++++++++++++++++++++++++++++++ "+mDevParamName);
-        //setRetainInstance(true);
     }
 
 
@@ -61,7 +59,6 @@ public class DeviceParametersFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mDevParamAdapter = new DeviceParameterAdapter(getActivity().getBaseContext());
-
         for(DeviceModel.DeviceParameterModel devParam :ApplicationDataEngine.getInstance().getDeviceByName(mDevParamName).getParameters())
             mDevParamAdapter.updateParams(devParam);
         mDevParamAdapter.setOnItemClickListener(new DeviceParameterAdapter.OnItemClickListener() {

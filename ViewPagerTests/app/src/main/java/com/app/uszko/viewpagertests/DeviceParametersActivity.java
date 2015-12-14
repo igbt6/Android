@@ -1,5 +1,6 @@
 package com.app.uszko.viewpagertests;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -52,11 +53,15 @@ public class DeviceParametersActivity extends AppCompatActivity {
         });
         setSupportActionBar(mToolbar);
         mViewPager = (ViewPager) findViewById(R.id.dev_params_viewpager);
-
         mPageAdapter=   new DeviceParamsPagerAdapter(getSupportFragmentManager());
+
+
         try {
+            String clickedDevName =getIntent().getStringExtra("DEV_NAME");
+            if(clickedDevName!=null)
+                mPageAdapter.updateDevParamsList(DeviceParametersFragment.newInstance(clickedDevName),clickedDevName);
             for(DeviceModel dev: ApplicationDataEngine.getInstance().getDevices()) {
-                mPageAdapter.updateDevParamsList(DeviceParametersFragment.newInstance(dev.getName()));
+                mPageAdapter.updateDevParamsList(DeviceParametersFragment.newInstance(dev.getName()),dev.getName());
             }
 
         }
