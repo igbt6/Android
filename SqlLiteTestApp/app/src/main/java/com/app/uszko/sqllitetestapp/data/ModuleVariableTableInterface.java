@@ -1,11 +1,11 @@
-package com.app.uszko.sqllitetestapp;
+package com.app.uszko.sqllitetestapp.data;
 
 import android.provider.BaseColumns;
 
 /**
  * Created by igbt6 on 18.12.2015.
  */
-public interface ModuleVariableTable {
+public interface ModuleVariableTableInterface {
 
 
     String NAME= "module_variable";
@@ -23,7 +23,7 @@ public interface ModuleVariableTable {
     String CREATE = "CREATE TABLE " + NAME + " ("
             + COLUMN_ID + " TEXT PRIMARY KEY, "
             + FK_MODULE+ " REFERENCES "
-            + ModuleTable.NAME + "(" + ModuleTable.COLUMN_ID + "), "
+      //      + ModuleTable.NAME + "(" + ModuleTable.COLUMN_ID + "), "
             + COLUMN_NAME + " TEXT NOT NULL, "
             + COLUMN_EQUATION + " TEXT NOT NULL, "
             + COLUMN_UNIT + " TEXT NOT NULL, "
