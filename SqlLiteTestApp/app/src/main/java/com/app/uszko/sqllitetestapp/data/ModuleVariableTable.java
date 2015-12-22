@@ -16,7 +16,7 @@ public final class ModuleVariableTable {
         public static final String EQUATION ="equation";
         public static final String UNIT="unit";
 
-        public static final String FK_MODULE = "module_fk_id";
+        public static final String MODULE_ID = "module_id"; //Foreign key
 
     }
 
@@ -24,7 +24,7 @@ public final class ModuleVariableTable {
         StringBuilder sb = new StringBuilder();
         sb.append("CREATE TABLE "+ ModuleVariableTable.TABLE_NAME+" (");
         sb.append(BaseColumns._ID+" INTEGER PRIMARY KEY, ");
-        sb.append("FOREIGN KEY(" + ModuleVariableColumns.FK_MODULE + ") REFERENCES " + ModuleTable.TABLE_NAME + "("
+        sb.append("FOREIGN KEY(" + ModuleVariableColumns.MODULE_ID + ") REFERENCES " + ModuleTable.TABLE_NAME + "("
                 + BaseColumns._ID + "), ");
         sb.append(ModuleVariableColumns.NAME+" TEXT NOT NULL, ");
         sb.append(ModuleVariableColumns.ICON_URL+" TEXT");

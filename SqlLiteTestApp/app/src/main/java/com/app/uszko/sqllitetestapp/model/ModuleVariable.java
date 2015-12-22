@@ -11,17 +11,30 @@ public class ModuleVariable extends ModelBase implements Comparable<ModuleVariab
     private String mEquation;
     private String mUnit;
     private String mIconUrl;
-    public ModuleVariable(String name, String equation, String unit, String icon){
+
+
+    private long mModuleId;
+    public ModuleVariable(long modId,String name, String equation, String unit, String icon){
 
         mName =name;
         mEquation =equation;
         mUnit =unit;
         mIconUrl =icon;
+        mModuleId=modId;
     }
 
     public ModuleVariable(){
 
     }
+
+    public long getModuleId() {
+        return mModuleId;
+    }
+
+    public void setModuleId(long mModuleId) {
+        this.mModuleId = mModuleId;
+    }
+
     public String getName() {
         return mName;
     }
