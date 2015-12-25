@@ -17,9 +17,9 @@ public interface DataManager {
 
     public Module getModuleByName(String name);
 
-    public long saveModule(Module movie);
+    public long saveModule(Module module);
 
-    public boolean deleteModule(long movieId);
+    public boolean deleteModule(long moduleId);
 
 
     // Module Variables
