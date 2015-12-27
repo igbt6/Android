@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    android:id="@+id/moduleDetailCardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/card_margin"
+    android:layout_marginLeft="@dimen/card_margin"
+    android:layout_marginRight="@dimen/card_margin"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <LinearLayout
+            style="@style/Widget.CardContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/moduleDetailIcon"
+                android:layout_width="@dimen/module_item_icon_size"
+                android:layout_height="@dimen/module_item_icon_size"/>
+
+            <TextView
+                android:id="@+id/moduleDetailName"
+                android:layout_width="325dp"
+                android:layout_height="wrap_content"
+                android:text="name"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"></LinearLayout>
+
+            <TextView
+                android:id="@+id/moduleDetailValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="value" />
+
+            <TextView
+                android:id="@+id/moduleDetailUnit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="unit" />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>

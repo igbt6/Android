@@ -43,16 +43,16 @@ public class ModuleRecyclerViewAdapter extends RecyclerView.Adapter<ModuleRecycl
     @Override
     public void onBindViewHolder(ModuleRecyclerViewAdapter.ViewHolder holder, final int position) {
         holder.name.setText(mModules.get(position).getName());
-        holder.icon.setImageResource(getModuleIconPathByUrl(mContext, mModules.get(position).getIconUrl()));
+        holder.icon.setImageResource(Util.getModuleIconPathByUrl(mContext, mModules.get(position).getIconUrl()));
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Context ctx= v.getContext();
                 Toast.makeText(ctx, "Clicked on module: "+mModules.get(position).getName(), Toast.LENGTH_SHORT).show();
-              //  Intent intent = new Intent(ctx,ModuleDetailActivity.class);
-              //  intent.putExtra(ModuleDetailActivity.MODULE_NAME,mModules.get(position).getName());
-              //  intent.putExtra(ModuleDetailActivity.MODULE_ID,mModules.get(position).getId());
-              //  ctx.startActivity(intent);
+                Intent intent = new Intent(ctx,ModuleDetailActivity.class);
+                intent.putExtra(ModuleDetailActivity.MODULE_NAME,mModules.get(position).getName());
+                intent.putExtra(ModuleDetailActivity.MODULE_ID,mModules.get(position).getId());
+                ctx.startActivity(intent);
             }
         });
     }
@@ -88,18 +88,4 @@ public class ModuleRecyclerViewAdapter extends RecyclerView.Adapter<ModuleRecycl
 
     }
 
-
-    private int getModuleIconPathByUrl(Context context, String iconName){
-        String iconUri= "drawable/"+ iconName;
-
-        int iconResource= context.getResources().getIdentifier(iconUri, null, context.getPackageName());
-        try{
-            Drawable icon= ContextCompat.getDrawable(context, iconResource);
-        }
-        catch(Exception e){
-            // default
-            iconResource= R.drawable.ic_smile;
-        }
-        return iconResource;
-    }
 }
