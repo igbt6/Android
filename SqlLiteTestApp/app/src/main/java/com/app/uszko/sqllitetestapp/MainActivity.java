@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
-
 import com.app.uszko.sqllitetestapp.model.Module;
 
 import java.util.ArrayList;
@@ -37,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //sets recycler View
+        //sets up the recycler View
         final FrameLayout frameLayout = (FrameLayout) findViewById(R.id.module_recycler_view_frame_layout);
         frameLayout.setBackgroundColor(getResources().getColor(R.color.colorWhite));
         mRecyclerView = (RecyclerView) findViewById(R.id.module_recycler_view);
@@ -45,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(new ModuleRecyclerViewAdapter(this, generateModuleList()));
     }
 
-
+    //FOR TEST ONLY
     private List<Module> generateModuleList(){
 
         List<Module> moduleList = new ArrayList<>();
