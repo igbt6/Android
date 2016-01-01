@@ -69,7 +69,7 @@ public class DataManagerImpl implements DataManager {
             mDb.beginTransaction();
             modRowId= moduleDao.save(module);
             //in case if we have some data there connected to a given module
-            List<ModuleVariable> varList = moduleVariableDao.getAllByModuleId(module.getId());
+            List<ModuleVariable> varList = null;//moduleVariableDao.getAllByModuleId(module.getId());  TODO
             long modVarRowId=0L;
             if(varList==null){
                 for(ModuleVariable mVar: module.getModuleVariablesList()){

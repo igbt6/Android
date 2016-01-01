@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +20,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
+    private MainApp mApp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +33,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "SqLiteTestApp_created by igbt6 (lukasz.uszko@gmail.com)", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Snackbar.make(view, "SqLiteTestApp created by igbt6 (lukasz.uszko@gmail.com)", Snackbar.LENGTH_LONG).show();
             }
         });
 
@@ -42,6 +43,14 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.module_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(new ModuleRecyclerViewAdapter(this, generateModuleList()));
+
+
+        mApp= (MainApp)getApplicationContext();
+        mApp.getDataManager().saveModule(generateModuleList().get(0));
+        List<Module> allModules =mApp.getDataManager().getAllModules();
+        for(Module mod: allModules) {
+            Log.d("++++++++++++++++++++++ ", "MODULE: "+String.valueOf(mod.getId())+ mod.getName() + mod.getIconUrl());
+        }
     }
 
     //FOR TEST ONLY

@@ -10,4 +10,5 @@
     tools:showIn="@layout/activity_main" tools:context=".MainActivity">
 
     <include layout="@layout/modules_recycler_view" />
+
 </RelativeLayout>

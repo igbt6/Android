@@ -28,28 +28,28 @@ public class ModuleDao implements Dao<Module> {
         mInsertStatement= mDb.compileStatement(INSERT);
     }
     @Override
-    public long save(Module type) {
+    public long save(Module entity) {
         mInsertStatement.clearBindings();
-        mInsertStatement.bindLong(0, type.getId());
-        mInsertStatement.bindString(1, type.getName());
-        mInsertStatement.bindString(2, type.getIconUrl());
+        mInsertStatement.bindLong(1, entity.getId());
+        mInsertStatement.bindString(2, entity.getName());
+        mInsertStatement.bindString(3, entity.getIconUrl());
         return mInsertStatement.executeInsert();
     }
 
     @Override
-    public void update(Module type) {
+    public void update(Module entity) {
         final ContentValues values = new ContentValues();
-        values.put(ModuleTable.ModuleColumns._ID, type.getId());
-        values.put(ModuleTable.ModuleColumns.NAME, type.getName());
-        values.put(ModuleTable.ModuleColumns.ICON_URL, type.getIconUrl());
+        values.put(ModuleTable.ModuleColumns._ID, entity.getId());
+        values.put(ModuleTable.ModuleColumns.NAME, entity.getName());
+        values.put(ModuleTable.ModuleColumns.ICON_URL, entity.getIconUrl());
         mDb.update(ModuleTable.TABLE_NAME, values, BaseColumns._ID + " = ?", new String[]{String
-                .valueOf(type.getId())});
+                .valueOf(entity.getId())});
     }
 
     @Override
-    public void delete(Module type) {
-        if(type.getId()>0){
-            mDb.delete(ModuleTable.TABLE_NAME,BaseColumns._ID +" = ?",new String[] { String.valueOf(type.getId()) });
+    public void delete(Module entity) {
+        if(entity.getId()>0){
+            mDb.delete(ModuleTable.TABLE_NAME,BaseColumns._ID +" = ?",new String[] { String.valueOf(entity.getId()) });
         }
     }
 

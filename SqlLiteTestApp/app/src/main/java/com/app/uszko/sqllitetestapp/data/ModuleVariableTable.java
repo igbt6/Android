@@ -24,12 +24,14 @@ public final class ModuleVariableTable {
         StringBuilder sb = new StringBuilder();
         sb.append("CREATE TABLE "+ ModuleVariableTable.TABLE_NAME+" (");
         sb.append(BaseColumns._ID+" INTEGER PRIMARY KEY, ");
-        sb.append("FOREIGN KEY(" + ModuleVariableColumns.MODULE_ID + ") REFERENCES " + ModuleTable.TABLE_NAME + "("
-                + BaseColumns._ID + "), ");
+        sb.append( ModuleVariableColumns.MODULE_ID +" INTEGER NOT NULL, ");
+
         sb.append(ModuleVariableColumns.NAME+" TEXT NOT NULL, ");
-        sb.append(ModuleVariableColumns.ICON_URL+" TEXT");
-        sb.append(ModuleVariableColumns.EQUATION+" TEXT");
-        sb.append(ModuleVariableColumns.UNIT+" TEXT");
+        sb.append(ModuleVariableColumns.ICON_URL+" TEXT, ");
+        sb.append(ModuleVariableColumns.EQUATION+" TEXT, ");
+        sb.append(ModuleVariableColumns.UNIT+" TEXT, ");
+        sb.append("FOREIGN KEY(" + ModuleVariableColumns.MODULE_ID + ") REFERENCES " + ModuleTable.TABLE_NAME + "("
+                + BaseColumns._ID + ")");
         sb.append(");");
         db.execSQL(sb.toString());
     }
