@@ -14,8 +14,8 @@ import java.util.List;
  */
 public class ModuleVariableDao implements Dao<ModuleVariable> {
 
-    private static final String INSERT= "insert into "+ModuleVariableTable.TABLE_NAME+"("+ModuleVariableTable.ModuleVariableColumns._ID+", "+ ModuleVariableTable.ModuleVariableColumns.NAME+", "+
-            ModuleVariableTable.ModuleVariableColumns.ICON_URL+", "+ModuleVariableTable.ModuleVariableColumns.EQUATION+") values(?, ?, ?,?)";
+    private static final String INSERT= "insert into "+ModuleVariableTable.TABLE_NAME+"("+ModuleVariableTable.ModuleVariableColumns._ID+", "+ModuleVariableTable.ModuleVariableColumns.MODULE_ID+", "+ ModuleVariableTable.ModuleVariableColumns.NAME+", "+
+            ModuleVariableTable.ModuleVariableColumns.ICON_URL+", "+ModuleVariableTable.ModuleVariableColumns.EQUATION+", "+ModuleVariableTable.ModuleVariableColumns.UNIT+") values(?, ?, ?, ?, ?, ?)";
     private SQLiteDatabase mDb;
     private SQLiteStatement mInsertStatement;
 
@@ -25,32 +25,32 @@ public class ModuleVariableDao implements Dao<ModuleVariable> {
         mInsertStatement= mDb.compileStatement(INSERT);
     }
     @Override
-    public long save(ModuleVariable type) {
+    public long save(ModuleVariable entity) {
         mInsertStatement.clearBindings();
-        mInsertStatement.bindLong(0, type.getId());
-        mInsertStatement.bindLong(1,type.getModuleId());
-        mInsertStatement.bindString(2, type.getName());
-        mInsertStatement.bindString(3, type.getIconUrl());
-        mInsertStatement.bindString(4, type.getEquation());
-        mInsertStatement.bindString(5, type.getUnit());
+        mInsertStatement.bindLong(1, entity.getModuleId());//entity.getId());
+        mInsertStatement.bindLong(2, entity.getModuleId());
+        mInsertStatement.bindString(3, entity.getName());
+        mInsertStatement.bindString(4, entity.getIconUrl());
+        mInsertStatement.bindString(5, entity.getEquation());
+        mInsertStatement.bindString(6, entity.getUnit());
         return mInsertStatement.executeInsert();
     }
 
     @Override
-    public void update(ModuleVariable type) {
+    public void update(ModuleVariable entity) {
         final ContentValues values = new ContentValues();
-        values.put(ModuleVariableTable.ModuleVariableColumns.MODULE_ID, type.getModuleId());
-        values.put(ModuleVariableTable.ModuleVariableColumns.NAME, type.getName());
-        values.put(ModuleVariableTable.ModuleVariableColumns.ICON_URL, type.getIconUrl());
-        values.put(ModuleVariableTable.ModuleVariableColumns.EQUATION, type.getEquation());
-        values.put(ModuleVariableTable.ModuleVariableColumns.UNIT, type.getUnit());
-        mDb.update(ModuleVariableTable.TABLE_NAME, values, BaseColumns._ID + " = ?", new String[]{String.valueOf(type.getId())});
+        values.put(ModuleVariableTable.ModuleVariableColumns.MODULE_ID, entity.getModuleId());
+        values.put(ModuleVariableTable.ModuleVariableColumns.NAME, entity.getName());
+        values.put(ModuleVariableTable.ModuleVariableColumns.ICON_URL, entity.getIconUrl());
+        values.put(ModuleVariableTable.ModuleVariableColumns.EQUATION, entity.getEquation());
+        values.put(ModuleVariableTable.ModuleVariableColumns.UNIT, entity.getUnit());
+        mDb.update(ModuleVariableTable.TABLE_NAME, values, BaseColumns._ID + " = ?", new String[]{String.valueOf(entity.getId())});
     }
 
     @Override
-    public void delete(ModuleVariable type) {
-        if(type.getId()>0){
-            mDb.delete(ModuleVariableTable.TABLE_NAME,BaseColumns._ID +" = ?",new String[] { String.valueOf(type.getId()) });
+    public void delete(ModuleVariable entity) {
+        if(entity.getId()>0){
+            mDb.delete(ModuleVariableTable.TABLE_NAME,BaseColumns._ID +" = ?",new String[] { String.valueOf(entity.getId()) });
         }
     }
 
@@ -74,7 +74,7 @@ public class ModuleVariableDao implements Dao<ModuleVariable> {
 
         Cursor c= mDb.query(ModuleVariableTable.TABLE_NAME, new String[]{ModuleVariableTable.ModuleVariableColumns._ID,ModuleVariableTable.ModuleVariableColumns.MODULE_ID,ModuleVariableTable.ModuleVariableColumns.NAME,
                 ModuleVariableTable.ModuleVariableColumns.ICON_URL,ModuleVariableTable.ModuleVariableColumns.EQUATION,ModuleVariableTable.ModuleVariableColumns.UNIT},
-                null,null, null, null, ModuleTable.ModuleColumns.NAME, null);
+                null,null, null, null, ModuleVariableTable.ModuleVariableColumns.NAME, null);
         if(c.moveToFirst()){
             do{
                 ModuleVariable modVar = this.buildModuleVariableFromCursor(c);
@@ -94,7 +94,7 @@ public class ModuleVariableDao implements Dao<ModuleVariable> {
         List<ModuleVariable> list = new ArrayList<>();
         Cursor c= mDb.query(ModuleVariableTable.TABLE_NAME, new String[]{ModuleVariableTable.ModuleVariableColumns._ID,ModuleVariableTable.ModuleVariableColumns.MODULE_ID,ModuleVariableTable.ModuleVariableColumns.NAME,
                         ModuleVariableTable.ModuleVariableColumns.ICON_URL,ModuleVariableTable.ModuleVariableColumns.EQUATION,ModuleVariableTable.ModuleVariableColumns.UNIT},
-                ModuleVariableTable.ModuleVariableColumns.MODULE_ID + " = ?", new String[] { String.valueOf(moduleId) }, null, null, null, "l");
+                ModuleVariableTable.ModuleVariableColumns.MODULE_ID + " = ?", new String[] { String.valueOf(moduleId) }, null, null, null, "1");
         if(c.moveToFirst()){
             do{
                 ModuleVariable modVar = this.buildModuleVariableFromCursor(c);

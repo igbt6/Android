@@ -1,6 +1,7 @@
 package com.app.uszko.sqllitetestapp.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by igbt6 on 20.12.2015.
@@ -9,7 +10,7 @@ public class Module extends ModelBase {
 
     private String mName;
     private String mIconUrl;
-    private ArrayList<ModuleVariable> mModuleVariablesList;
+    private List<ModuleVariable> mModuleVariablesList;
     public Module(long id, String name, String icon){
 
         mName =name;
@@ -30,11 +31,11 @@ public class Module extends ModelBase {
         this.mName = mName;
     }
 
-    public ArrayList<ModuleVariable> getModuleVariablesList() {
+    public List<ModuleVariable> getModuleVariablesList() {
         return mModuleVariablesList;
     }
 
-    public void setModuleVariablesList(ArrayList<ModuleVariable> mModuleVariablesList) {
+    public void setModuleVariablesList(List<ModuleVariable> mModuleVariablesList) {
         this.mModuleVariablesList = mModuleVariablesList;
     }
 

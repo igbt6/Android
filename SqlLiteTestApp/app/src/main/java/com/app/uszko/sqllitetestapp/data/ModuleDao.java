@@ -57,7 +57,7 @@ public class ModuleDao implements Dao<Module> {
     public Module get(long id) {
         Module module=null;
         Cursor c= mDb.query(ModuleTable.TABLE_NAME, new String[]{ModuleTable.ModuleColumns._ID,ModuleTable.ModuleColumns.NAME,ModuleTable.ModuleColumns.ICON_URL},
-                        ModuleTable.ModuleColumns._ID + " = ?", new String[] { String.valueOf(id) }, null, null, null, "l");
+                        ModuleTable.ModuleColumns._ID + " = ?", new String[] { String.valueOf(id) }, null, null, null, "1");
         if(c.moveToFirst()){
             module = this.buildModuleFromCursor(c);
         }

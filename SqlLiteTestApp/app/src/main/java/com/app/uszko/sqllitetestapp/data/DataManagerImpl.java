@@ -67,13 +67,15 @@ public class DataManagerImpl implements DataManager {
         long modRowId=0L;
         try{
             mDb.beginTransaction();
-            modRowId= moduleDao.save(module);
+           // modRowId= moduleDao.save(module);
             //in case if we have some data there connected to a given module
             List<ModuleVariable> varList = null;//moduleVariableDao.getAllByModuleId(module.getId());  TODO
             long modVarRowId=0L;
             if(varList==null){
                 for(ModuleVariable mVar: module.getModuleVariablesList()){
+
                     modVarRowId= moduleVariableDao.save(mVar);
+                    Log.e(LOG_TAG, "*************&&&HERERE*******");
                 }
             }
             else{
@@ -120,12 +122,12 @@ public class DataManagerImpl implements DataManager {
 
     @Override
     public List<ModuleVariable> getAllModVariables() {
-        return null;
+        return moduleVariableDao.getAll();
     }
 
     @Override
     public List<ModuleVariable> getAllModVariablesByModuleId(long moduleId) {
-        return null;
+        return moduleVariableDao.getAllByModuleId(moduleId);
     }
 
     @Override

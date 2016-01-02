@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -47,20 +48,29 @@ public class ModuleDetailActivity extends AppCompatActivity  {
         //sets up recycler View
         mRecyclerView = (RecyclerView) findViewById(R.id.module_details_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(new ModuleDetailsRecyclerViewAdapter(this, generateModuleVariablesList()));
-    }
 
-    //FOR TEST ONLY
-    private List<ModuleVariable> generateModuleVariablesList(){
 
         List<ModuleVariable> moduleList = new ArrayList<>();
-        moduleList.add(new ModuleVariable(10, "VAR_1","EQ", "A","ICON_URL"));
-        moduleList.add(new ModuleVariable(10, "VAR_2","EQ", "KM","ICON_URL"));
-        moduleList.add(new ModuleVariable(10, "VAR_3","EQ", "V","ICON_URL"));
-        moduleList.add(new ModuleVariable(10, "VAR_4","EQ", "%","ICON_URL"));
-        moduleList.add(new ModuleVariable(10, "VAR_5","EQ", "Pa","ICON_URL"));
-        moduleList.add(new ModuleVariable(10, "VAR_6","EQ", "Hz","ICON_URL"));
-        moduleList.add(new ModuleVariable(10, "VAR_7","EQ", "Ohm","ICON_URL"));
+        MainApp mApp= (MainApp)getApplicationContext();
+        for(ModuleVariable mVar: mApp.getDataManager().getAllModVariables())
+        {
+            Log.d("********************* ", "MVAR: " + String.valueOf(mVar.getId()) + " " +mVar.getModuleId() + " " + mVar.getName() + " " + mVar.getIconUrl()+" "+mVar.getUnit() );
+        }
+
+
+        List<ModuleVariable> modVars=queryModuleVariablesListFromDb(moduleId);
+        if(modVars!=null) {
+            mRecyclerView.setAdapter(new ModuleDetailsRecyclerViewAdapter(this, modVars));
+        }
+        else{
+            mRecyclerView.setAdapter(new ModuleDetailsRecyclerViewAdapter(this, new ArrayList<ModuleVariable>()));
+        }
+    }
+
+    private List<ModuleVariable> queryModuleVariablesListFromDb(long moduleId){
+        List<ModuleVariable> moduleList = new ArrayList<>();
+        MainApp mApp= (MainApp)getApplicationContext();
+        moduleList =mApp.getDataManager().getAllModVariablesByModuleId(moduleId);
         return moduleList;
     }
 
