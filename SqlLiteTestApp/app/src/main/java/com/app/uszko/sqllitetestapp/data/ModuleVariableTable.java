@@ -23,10 +23,10 @@ public final class ModuleVariableTable {
     public static void onCreate(SQLiteDatabase db) {
         StringBuilder sb = new StringBuilder();
         sb.append("CREATE TABLE "+ ModuleVariableTable.TABLE_NAME+" (");
-        sb.append(BaseColumns._ID+" INTEGER, ");
+        sb.append(BaseColumns._ID+" INTEGER PRIMARY KEY, ");
         sb.append( ModuleVariableColumns.MODULE_ID +" INTEGER NOT NULL, ");
 
-        sb.append(ModuleVariableColumns.NAME+" TEXT NOT NULL PRIMARY KEY, ");
+        sb.append(ModuleVariableColumns.NAME+" TEXT NOT NULL, ");
         sb.append(ModuleVariableColumns.ICON_URL+" TEXT, ");
         sb.append(ModuleVariableColumns.EQUATION+" TEXT, ");
         sb.append(ModuleVariableColumns.UNIT+" TEXT, ");

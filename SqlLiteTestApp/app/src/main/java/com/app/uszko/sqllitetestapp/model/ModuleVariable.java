@@ -14,8 +14,9 @@ public class ModuleVariable extends ModelBase implements Comparable<ModuleVariab
 
 
     private long mModuleId;
-    public ModuleVariable(long modId,String name, String equation, String unit, String icon){
+    public ModuleVariable(long varId,long modId,String name, String equation, String unit, String icon){
 
+        super.setId(varId);
         mName =name;
         mEquation =equation;
         mUnit =unit;
@@ -71,7 +72,7 @@ public class ModuleVariable extends ModelBase implements Comparable<ModuleVariab
 
     @Override
     public String toString() {
-        return "VARIABLE: "+ mName + " "+mEquation +" "+mUnit+" "+ mIconUrl + '\n';
+        return "VARIABLE: "+String.valueOf(getId())+" "+String.valueOf(mModuleId)+" "+ mName + " "+mEquation +" "+mUnit+" "+ mIconUrl + '\n';
     }
 
     @Override

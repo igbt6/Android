@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
+
 import com.app.uszko.sqllitetestapp.model.Module;
 import com.app.uszko.sqllitetestapp.model.ModuleVariable;
 
@@ -39,23 +41,25 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //sets up the recycler View
-        final FrameLayout frameLayout = (FrameLayout) findViewById(R.id.module_recycler_view_frame_layout);
-        frameLayout.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+        final RelativeLayout relLayout = (RelativeLayout) findViewById(R.id.module_recycler_view_frame_layout);
+        relLayout.setBackgroundColor(getResources().getColor(R.color.colorLighterBlue));
         mRecyclerView = (RecyclerView) findViewById(R.id.module_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(new ModuleRecyclerViewAdapter(this, generateModuleList()));
-
 
         mApp= (MainApp)getApplicationContext();
 
         for(Module mod: generateModuleList()) { //saving all
             mApp.getDataManager().saveModule(mod);
         }
-        List<Module> allModules =mApp.getDataManager().getAllModules();
+        //List<Module> allModules =mApp.getDataManager().getAllModules();
 
-        for(Module mod: allModules) {
-            Log.d("++++++++++++++++++++++ ", "MODULE: "+String.valueOf(mod.getId())+" "+ mod.getName()+" "+ mod.getIconUrl());
-        }
+       // for(Module mod: allModules) {
+       //     Log.d("++++++++++++++++++++++ ", "MODULE: "+String.valueOf(mod.getId())+" "+ mod.getName()+" "+ mod.getIconUrl());
+       // }
+        mRecyclerView.setAdapter(new ModuleRecyclerViewAdapter(this, mApp.getDataManager().getAllModules()));
+
+
+
     }
 
     //FOR TEST ONLY simulates data fetched from Internet/ XML/JSON ...
@@ -64,24 +68,24 @@ public class MainActivity extends AppCompatActivity {
         List<Module> moduleList = new ArrayList<>();
 
 
-        Module sensor1 = new Module(1, "SpeedSensor", "ic_cloud");
+        Module sensor1 = new Module(1, "SpeedSensor", "ic_speed");
         List<ModuleVariable> modVars1 = new ArrayList<>();
-        modVars1.add(new ModuleVariable(sensor1.getId(), "Speed_M/S", "EQ", "m/s", "ICON_URL"));
-        modVars1.add(new ModuleVariable(sensor1.getId(), "Speed_Km", "EQ", "KM", "ICON_URL"));
+        modVars1.add(new ModuleVariable(15135,sensor1.getId(), "Speed_M/S", "EQ", "m/s", "ICON_URL"));
+        modVars1.add(new ModuleVariable(15236,sensor1.getId(), "Speed_Km", "EQ", "KM", "ICON_URL"));
         sensor1.setModuleVariablesList(modVars1);
         moduleList.add(sensor1);
 
-        Module sensor2 = new Module(2, "ElectricitySensor", "ic_storm");
+        Module sensor2 = new Module(2, "ElectricitySensor", "ic_electricity");
         List<ModuleVariable> modVars2 = new ArrayList<>();
-        modVars2.add(new ModuleVariable(sensor2.getId(), "Current","EQ", "A","ICON_URL"));
-        modVars2.add(new ModuleVariable(sensor2.getId(), "Voltage", "EQ", "V", "ICON_URL"));
-        modVars2.add(new ModuleVariable(sensor2.getId(), "Resistance", "EQ", "Ohm", "ICON_URL"));
+        modVars2.add(new ModuleVariable(23411,sensor2.getId(), "Current","EQ", "A","ICON_URL"));
+        modVars2.add(new ModuleVariable(26989,sensor2.getId(), "Voltage", "EQ", "V", "ICON_URL"));
+        modVars2.add(new ModuleVariable(25899,sensor2.getId(), "Resistance", "EQ", "Ohm", "ICON_URL"));
         sensor2.setModuleVariablesList(modVars2);
         moduleList.add(sensor2);
 
-        Module sensor3 = new Module(4, "EnvironmentSensor", "ic_sky");
+        Module sensor3 = new Module(4, "EnvironmentSensor", "ic_environment");
         List<ModuleVariable> modVars3= new ArrayList<>();
-        modVars3.add(new ModuleVariable(sensor3.getId(), "Pressure", "EQ", "Pa", "ICON_URL"));
+        modVars3.add(new ModuleVariable(32111,sensor3.getId(), "Pressure", "EQ", "Pa", "ICON_URL"));
         sensor3.setModuleVariablesList(modVars3);
         moduleList.add(sensor3);
 
@@ -103,6 +107,21 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
+            return true;
+        }
+
+        else if(id==R.id.action_delete_db){
+            for(Module mod:mApp.getDataManager().getAllModules())
+            {
+                Log.i("********* ", "mModule deleted: " + String.valueOf(mod.getId()) + " " + mod.getName());
+                mApp.getDataManager().deleteModule(mod.getId());
+            }
+            //if we have some not connected module variables
+            for(ModuleVariable mVar: mApp.getDataManager().getAllModVariables())
+            {
+                Log.i("********* ", "mVar deleted: " + String.valueOf(mVar.getId()) + " " + mVar.getModuleId() + " " + mVar.getName() + " " + mVar.getIconUrl() + " " + mVar.getUnit());
+                mApp.getDataManager().deleteModuleVariable(mVar);
+            }
             return true;
         }
 

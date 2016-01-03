@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -37,26 +38,26 @@ public class ModuleDetailActivity extends AppCompatActivity  {
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+
+
         CollapsingToolbarLayout collapsingToolbar =(CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle(moduleName);
         final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
         Picasso.with(this)
-                .load(R.drawable.ic_smile)
+                .load(Util.getModuleIconPathByUrl(this,((MainApp)getApplicationContext()).getDataManager().getModule(moduleId).getIconUrl()))
                 .rotate(0)
                 .into(imageView);
 
         //sets up recycler View
         mRecyclerView = (RecyclerView) findViewById(R.id.module_details_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-
-        List<ModuleVariable> moduleList = new ArrayList<>();
-        MainApp mApp= (MainApp)getApplicationContext();
-        for(ModuleVariable mVar: mApp.getDataManager().getAllModVariables())
-        {
-            Log.d("********************* ", "MVAR: " + String.valueOf(mVar.getId()) + " " +mVar.getModuleId() + " " + mVar.getName() + " " + mVar.getIconUrl()+" "+mVar.getUnit() );
-        }
-
 
         List<ModuleVariable> modVars=queryModuleVariablesListFromDb(moduleId);
         if(modVars!=null) {
@@ -68,11 +69,11 @@ public class ModuleDetailActivity extends AppCompatActivity  {
     }
 
     private List<ModuleVariable> queryModuleVariablesListFromDb(long moduleId){
-        List<ModuleVariable> moduleList = new ArrayList<>();
         MainApp mApp= (MainApp)getApplicationContext();
-        moduleList =mApp.getDataManager().getAllModVariablesByModuleId(moduleId);
-        return moduleList;
+        List<ModuleVariable> modVarsList =mApp.getDataManager().getAllModVariablesByModuleId(moduleId);
+        return modVarsList;
     }
+
 
 
     @Override
@@ -89,17 +90,5 @@ public class ModuleDetailActivity extends AppCompatActivity  {
     protected void onResume() {
         super.onResume();
     }
-/*
-    private int getModuleIconPathByModId(Context context, int moduleId){
-        String iconUri= "drawable/"+ module.getIcon();
-        int iconResource= context.getResources().getIdentifier(iconUri, null, context.getPackageName());
-        try{
-            Drawable icon= ContextCompat.getDrawable(context, iconResource);
-        }
-        catch(Exception e){
-            iconResource= R.drawable.app_logo;
-        }
-        return iconResource;
-    }
-    */
+
 }

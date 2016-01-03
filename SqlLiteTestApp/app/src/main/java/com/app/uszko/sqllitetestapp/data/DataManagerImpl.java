@@ -9,7 +9,6 @@ import com.app.uszko.sqllitetestapp.ModuleDbHelper;
 import com.app.uszko.sqllitetestapp.model.Module;
 import com.app.uszko.sqllitetestapp.model.ModuleVariable;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -67,15 +66,12 @@ public class DataManagerImpl implements DataManager {
         long modRowId=0L;
         try{
             mDb.beginTransaction();
-           // modRowId= moduleDao.save(module);
-            //in case if we have some data there connected to a given module
+            modRowId= moduleDao.save(module);
+            //in case if we already have had some data connected to a given module
             List<ModuleVariable> varList = null;//moduleVariableDao.getAllByModuleId(module.getId());  TODO
-            long modVarRowId=0L;
             if(varList==null){
                 for(ModuleVariable mVar: module.getModuleVariablesList()){
-
-                    modVarRowId= moduleVariableDao.save(mVar);
-                    Log.e(LOG_TAG, "*************&&&HERERE*******");
+                    moduleVariableDao.save(mVar);
                 }
             }
             else{
@@ -97,7 +93,7 @@ public class DataManagerImpl implements DataManager {
         boolean result = false;
         try{
             mDb.beginTransaction();
-            Module module = moduleDao.get(moduleId);
+            Module module = getModule(moduleId);
 
             if(module!=null){
                 for(ModuleVariable mVar: module.getModuleVariablesList()){
@@ -114,7 +110,6 @@ public class DataManagerImpl implements DataManager {
         }
         return result;
     }
-    //TODO same as above, i won't be using it in the demo app
     @Override
     public ModuleVariable getModuleVariable(long modVarId) {
         return null;
@@ -137,6 +132,6 @@ public class DataManagerImpl implements DataManager {
 
     @Override
     public void deleteModuleVariable(ModuleVariable modVar) {
-
+        moduleVariableDao.delete(modVar);
     }
 }

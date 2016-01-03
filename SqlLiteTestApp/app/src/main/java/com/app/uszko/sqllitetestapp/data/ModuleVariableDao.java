@@ -27,7 +27,7 @@ public class ModuleVariableDao implements Dao<ModuleVariable> {
     @Override
     public long save(ModuleVariable entity) {
         mInsertStatement.clearBindings();
-        mInsertStatement.bindLong(1, entity.getModuleId());//entity.getId());
+        mInsertStatement.bindLong(1, entity.getId());//entity.getId());
         mInsertStatement.bindLong(2, entity.getModuleId());
         mInsertStatement.bindString(3, entity.getName());
         mInsertStatement.bindString(4, entity.getIconUrl());
@@ -39,6 +39,7 @@ public class ModuleVariableDao implements Dao<ModuleVariable> {
     @Override
     public void update(ModuleVariable entity) {
         final ContentValues values = new ContentValues();
+        values.put(ModuleVariableTable.ModuleVariableColumns._ID, entity.getId());
         values.put(ModuleVariableTable.ModuleVariableColumns.MODULE_ID, entity.getModuleId());
         values.put(ModuleVariableTable.ModuleVariableColumns.NAME, entity.getName());
         values.put(ModuleVariableTable.ModuleVariableColumns.ICON_URL, entity.getIconUrl());
@@ -59,7 +60,7 @@ public class ModuleVariableDao implements Dao<ModuleVariable> {
         ModuleVariable modVar= null;
         Cursor c = mDb.query(ModuleVariableTable.TABLE_NAME,new String[]{ModuleVariableTable.ModuleVariableColumns._ID,ModuleVariableTable.ModuleVariableColumns.MODULE_ID,ModuleVariableTable.ModuleVariableColumns.NAME,
                         ModuleVariableTable.ModuleVariableColumns.ICON_URL,ModuleVariableTable.ModuleVariableColumns.EQUATION,ModuleVariableTable.ModuleVariableColumns.UNIT},
-                ModuleVariableTable.ModuleVariableColumns._ID + " = ?", new String[] { String.valueOf(id) }, null, null, null, "l");
+                ModuleVariableTable.ModuleVariableColumns._ID + " = ?", new String[] { String.valueOf(id) }, null, null, null, "1"); //1 limit
         if(c.moveToFirst()){
             modVar= this.buildModuleVariableFromCursor(c);
         }
@@ -94,7 +95,7 @@ public class ModuleVariableDao implements Dao<ModuleVariable> {
         List<ModuleVariable> list = new ArrayList<>();
         Cursor c= mDb.query(ModuleVariableTable.TABLE_NAME, new String[]{ModuleVariableTable.ModuleVariableColumns._ID,ModuleVariableTable.ModuleVariableColumns.MODULE_ID,ModuleVariableTable.ModuleVariableColumns.NAME,
                         ModuleVariableTable.ModuleVariableColumns.ICON_URL,ModuleVariableTable.ModuleVariableColumns.EQUATION,ModuleVariableTable.ModuleVariableColumns.UNIT},
-                ModuleVariableTable.ModuleVariableColumns.MODULE_ID + " = ?", new String[] { String.valueOf(moduleId) }, null, null, null, "1");
+                ModuleVariableTable.ModuleVariableColumns.MODULE_ID + " = ?", new String[] { String.valueOf(moduleId) }, null, null, null, null);
         if(c.moveToFirst()){
             do{
                 ModuleVariable modVar = this.buildModuleVariableFromCursor(c);
